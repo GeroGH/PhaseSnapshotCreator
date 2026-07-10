@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Tekla.Structures.Model;
@@ -19,12 +21,12 @@ namespace SingleSnapShot
         private void ButtonCreateSnapShot_Click(object sender, EventArgs e)
         {
             var dateTimeNow = DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
-            var fileName = this.ExportFolder + @"\" + this.TextBoxFileName.Text + " " + dateTimeNow;
+            var fileName = this.ExportFolder + @"\" + this.PhaseOrder.Text + " " + dateTimeNow;
 
-            this.CreateSnapShotMacro(this.TextBoxResolution.Text, fileName);
+            this.CreateSingleSnapShotMacro(this.Resolution.Text, fileName);
             Tekla.Structures.Model.Operations.Operation.RunMacro(this.MacroFileName);
         }
-        private void CreateSnapShotMacro(string resolution, string fileName)
+        private void CreateSingleSnapShotMacro(string resolution, string fileName)
         {
             var sb = new StringBuilder();
 
@@ -56,10 +58,23 @@ namespace SingleSnapShot
             Process.Start("explorer.exe", @"/open, " + this.ExportFolder);
         }
 
-        private void CreateSnapShot_Load(object sender, EventArgs e)
+        private void PhaseSnapshotCreator_Load(object sender, EventArgs e)
         {
-            this.TextBoxResolution.Text = "320";
-            this.TextBoxFileName.Text = "Snapshot";
+            // Load simple string settings
+            this.Resolution.Text = Properties.Settings.Default.Resoulution;
+            this.FolderName.Text = Properties.Settings.Default.FolderName;
+
+            // Load PhaseOrder list
+            if (Properties.Settings.Default.PhaseOrder != null)
+            {
+                this.PhaseOrder.Lines = Properties.Settings.Default.PhaseOrder.Cast<string>().ToArray();
+            }
+
+            // Load VisiblePhases list
+            if (Properties.Settings.Default.VisiblePhases != null)
+            {
+                this.VisiblePhases.Lines = Properties.Settings.Default.VisiblePhases.Cast<string>().ToArray();
+            }
 
             var macroName = "CreateSnapShotMacro.cs";
             this.MacroFileName = @"C:\ProgramData\Trimble\Tekla Structures\2023.0\Environments\UK\General\user-macros\modeling\" + macroName;
@@ -77,12 +92,41 @@ namespace SingleSnapShot
 
         private void TextBoxResolution_TextChanged(object sender, EventArgs e)
         {
-            this.TextBoxResolution.Text = this.TextBoxResolution.Text;
+            Properties.Settings.Default.Resoulution = this.Resolution.Text;
         }
 
         private void TextBoxFileName_TextChanged(object sender, EventArgs e)
         {
-            this.TextBoxFileName.Text = this.TextBoxFileName.Text;
+            var phases = new StringCollection();
+
+            foreach (var phase in this.PhaseOrder.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                phases.Add(phase);
+            }
+
+            Properties.Settings.Default.PhaseOrder = phases;
+        }
+
+        private void VisiblePhases_TextChanged(object sender, EventArgs e)
+        {
+            var phases = new StringCollection();
+
+            foreach (var phase in this.VisiblePhases.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                phases.Add(phase);
+            }
+
+            Properties.Settings.Default.VisiblePhases = phases;
+        }
+
+        private void FolderName_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.FolderName = this.FolderName.Text;
+        }
+
+        private void CreateSnapShot_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.Save();
         }
     }
 }
