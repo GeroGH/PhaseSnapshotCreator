@@ -33,15 +33,13 @@ namespace SingleSnapShot
         {
             this.PhaseOrderLabel = new System.Windows.Forms.Label();
             this.PhaseOrder = new System.Windows.Forms.TextBox();
-            this.ButtonCreateSnapShot = new System.Windows.Forms.Button();
+            this.ButtonStartPhasing = new System.Windows.Forms.Button();
             this.ButtonOpenFolder = new System.Windows.Forms.Button();
             this.VisiblePhasesLabel = new System.Windows.Forms.Label();
             this.Resolution = new System.Windows.Forms.TextBox();
             this.VisiblePhases = new System.Windows.Forms.TextBox();
             this.ResolutionLabel = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.FolderNameLabel = new System.Windows.Forms.Label();
-            this.FolderName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // PhaseOrderLabel
@@ -58,23 +56,23 @@ namespace SingleSnapShot
             this.PhaseOrder.Location = new System.Drawing.Point(10, 23);
             this.PhaseOrder.Multiline = true;
             this.PhaseOrder.Name = "PhaseOrder";
-            this.PhaseOrder.Size = new System.Drawing.Size(109, 190);
+            this.PhaseOrder.Size = new System.Drawing.Size(109, 152);
             this.PhaseOrder.TabIndex = 1;
             this.PhaseOrder.TextChanged += new System.EventHandler(this.TextBoxFileName_TextChanged);
             // 
-            // ButtonCreateSnapShot
+            // ButtonStartPhasing
             // 
-            this.ButtonCreateSnapShot.Location = new System.Drawing.Point(251, 87);
-            this.ButtonCreateSnapShot.Name = "ButtonCreateSnapShot";
-            this.ButtonCreateSnapShot.Size = new System.Drawing.Size(152, 59);
-            this.ButtonCreateSnapShot.TabIndex = 2;
-            this.ButtonCreateSnapShot.Text = "Start Phasing";
-            this.ButtonCreateSnapShot.UseVisualStyleBackColor = true;
-            this.ButtonCreateSnapShot.Click += new System.EventHandler(this.ButtonCreateSnapShot_Click);
+            this.ButtonStartPhasing.Location = new System.Drawing.Point(251, 49);
+            this.ButtonStartPhasing.Name = "ButtonStartPhasing";
+            this.ButtonStartPhasing.Size = new System.Drawing.Size(152, 59);
+            this.ButtonStartPhasing.TabIndex = 2;
+            this.ButtonStartPhasing.Text = "Start Phasing";
+            this.ButtonStartPhasing.UseVisualStyleBackColor = true;
+            this.ButtonStartPhasing.Click += new System.EventHandler(this.ButtonStartPhasing_Click);
             // 
             // ButtonOpenFolder
             // 
-            this.ButtonOpenFolder.Location = new System.Drawing.Point(251, 152);
+            this.ButtonOpenFolder.Location = new System.Drawing.Point(251, 114);
             this.ButtonOpenFolder.Name = "ButtonOpenFolder";
             this.ButtonOpenFolder.Size = new System.Drawing.Size(152, 61);
             this.ButtonOpenFolder.TabIndex = 2;
@@ -104,7 +102,7 @@ namespace SingleSnapShot
             this.VisiblePhases.Location = new System.Drawing.Point(128, 23);
             this.VisiblePhases.Multiline = true;
             this.VisiblePhases.Name = "VisiblePhases";
-            this.VisiblePhases.Size = new System.Drawing.Size(109, 190);
+            this.VisiblePhases.Size = new System.Drawing.Size(109, 152);
             this.VisiblePhases.TabIndex = 3;
             this.VisiblePhases.TextChanged += new System.EventHandler(this.VisiblePhases_TextChanged);
             // 
@@ -119,41 +117,22 @@ namespace SingleSnapShot
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 224);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 182);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(411, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // FolderNameLabel
-            // 
-            this.FolderNameLabel.AutoSize = true;
-            this.FolderNameLabel.Location = new System.Drawing.Point(248, 46);
-            this.FolderNameLabel.Name = "FolderNameLabel";
-            this.FolderNameLabel.Size = new System.Drawing.Size(70, 13);
-            this.FolderNameLabel.TabIndex = 7;
-            this.FolderNameLabel.Text = "Folder Name:";
-            // 
-            // FolderName
-            // 
-            this.FolderName.Location = new System.Drawing.Point(251, 61);
-            this.FolderName.Name = "FolderName";
-            this.FolderName.Size = new System.Drawing.Size(152, 20);
-            this.FolderName.TabIndex = 6;
-            this.FolderName.TextChanged += new System.EventHandler(this.FolderName_TextChanged);
-            // 
             // CreateSnapShot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 246);
-            this.Controls.Add(this.FolderNameLabel);
-            this.Controls.Add(this.FolderName);
+            this.ClientSize = new System.Drawing.Size(411, 204);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.ResolutionLabel);
             this.Controls.Add(this.VisiblePhases);
             this.Controls.Add(this.ButtonOpenFolder);
-            this.Controls.Add(this.ButtonCreateSnapShot);
+            this.Controls.Add(this.ButtonStartPhasing);
             this.Controls.Add(this.Resolution);
             this.Controls.Add(this.PhaseOrder);
             this.Controls.Add(this.VisiblePhasesLabel);
@@ -173,15 +152,13 @@ namespace SingleSnapShot
 
         private Label PhaseOrderLabel;
         private TextBox PhaseOrder;
-        private Button ButtonCreateSnapShot;
+        private Button ButtonStartPhasing;
         private Button ButtonOpenFolder;
         private Label VisiblePhasesLabel;
         private TextBox Resolution;
         private TextBox VisiblePhases;
         private Label ResolutionLabel;
         private StatusStrip statusStrip1;
-        private Label FolderNameLabel;
-        private TextBox FolderName;
     }
 }
 

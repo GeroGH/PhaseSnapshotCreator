@@ -2,11 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SingleSnapShot.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Resoulution" Type="System.String" Scope="User">
+    <Setting Name="Resolution" Type="System.String" Scope="User">
       <Value Profile="(Default)">640</Value>
-    </Setting>
-    <Setting Name="FolderName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">PhaseSnapShotsGG</Value>
     </Setting>
     <Setting Name="PhaseOrder" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />

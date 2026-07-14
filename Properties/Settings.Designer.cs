@@ -26,24 +26,12 @@ namespace SingleSnapShot.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("640")]
-        public string Resoulution {
+        public string Resolution {
             get {
-                return ((string)(this["Resoulution"]));
+                return ((string)(this["Resolution"]));
             }
             set {
-                this["Resoulution"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("PhaseSnapShotsGG")]
-        public string FolderName {
-            get {
-                return ((string)(this["FolderName"]));
-            }
-            set {
-                this["FolderName"] = value;
+                this["Resolution"] = value;
             }
         }
         
