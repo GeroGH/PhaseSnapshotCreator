@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using SingleSnapShot.Services;
@@ -12,20 +11,9 @@ namespace SingleSnapShot
 {
     public partial class CreateSnapShot : Form
     {
-        private readonly TeklaService TeklaService;
-        private readonly MacroCreator MacroCreator;
-        private readonly SnapshotManager SnapshotManager;
-
-        public string ExportFolderPath { get; set; }
-
-        public string MacroFilePath { get; set; }
-
         public CreateSnapShot()
         {
             this.InitializeComponent();
-            this.TeklaService = new TeklaService();
-            this.MacroCreator = new MacroCreator();
-            this.SnapshotManager = new SnapshotManager();
         }
 
         private void PhaseSnapshotCreator_Load(object sender, EventArgs e)
@@ -46,10 +34,6 @@ namespace SingleSnapShot
                         Properties.Settings.Default.VisiblePhases.Cast<string>().ToArray();
                 }
 
-                var modelPath = this.TeklaService.GetModelPath();
-                var macroDirectory = this.TeklaService.GetUserMacroDirectory();
-                this.MacroFilePath = Path.Combine(macroDirectory, "CreateSnapShotMacro.cs");
-                this.ExportFolderPath = this.SnapshotManager.CreateExportFolder(modelPath, this.TeklaService.GetUserInitials());
             }
             catch (Exception ex)
             {
@@ -59,14 +43,13 @@ namespace SingleSnapShot
 
         private void ButtonStartPhasing_Click(object sender, EventArgs e)
         {
-            var snapshotFile = this.SnapshotManager.CreateSnapshotFileName(this.ExportFolderPath, "Frame 1");
-            this.MacroCreator.CreateSnapshotMacro(this.MacroFilePath, this.Resolution.Text, snapshotFile);
-            Operation.RunMacro(this.MacroFilePath);
+            MacroCreator.CreateSnapshotMacro(TeklaService.MacroPath, TeklaService.ExportFolderPath, this.Resolution.Text, "Frame 1");
+            Operation.RunMacro(TeklaService.MacroPath);
         }
 
         private void ButtonOpenFolder_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe", this.ExportFolderPath);
+            Process.Start("explorer.exe", TeklaService.ExportFolderPath);
         }
 
         private void TextBoxResolution_TextChanged(object sender, EventArgs e)

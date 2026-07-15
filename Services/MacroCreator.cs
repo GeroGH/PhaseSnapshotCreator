@@ -3,10 +3,12 @@ using System.Text;
 
 namespace SingleSnapShot.Services
 {
-    public class MacroCreator
+    public static class MacroCreator
     {
-        public void CreateSnapshotMacro(string macroPath, string resolution, string fileName)
+        public static void CreateSnapshotMacro(string macroPath, string exportFolder, string resolution, string fileName)
         {
+            var fileNameFullPath = Path.Combine(exportFolder, fileName);
+
             var sb = new StringBuilder();
 
             sb.AppendLine($"namespace Tekla.Technology.Akit.UserScript");
@@ -21,7 +23,7 @@ namespace SingleSnapShot.Services
             sb.AppendLine($"            akit.ValueChange(\"snapshot_option_dialog\", \"dpi\", \"150\");");
             sb.AppendLine($"            akit.ValueChange(\"snapshot_option_dialog\", \"white_bg_enabled\", \"1\");");
             sb.AppendLine($"            akit.ValueChange(\"snapshot_dialog\", \"target_selection\", \"1\");");
-            sb.AppendLine($"            akit.ValueChange(\"snapshot_dialog\", \"filename\", @\"{fileName}\" + \".png\");");
+            sb.AppendLine($"            akit.ValueChange(\"snapshot_dialog\", \"filename\", @\"{fileNameFullPath}\" + \".png\");");
             sb.AppendLine($"            akit.ValueChange(\"snapshot_dialog\", \"show_with_viewer_enabled\", \"0\");");
             sb.AppendLine($"            akit.PushButton(\"take_snapshot\", \"snapshot_dialog\"); ");
             sb.AppendLine($"            akit.PushButton(\"option_ok\", \"snapshot_option_dialog\");");

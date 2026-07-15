@@ -74,7 +74,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\SnapshotSettings.cs" />
     <Compile Include="PhaseSnapshotCreatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,7 +83,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MacroCreator.cs" />
-    <Compile Include="Services\SnapshotManager.cs" />
     <Compile Include="Services\TeklaService.cs" />
     <EmbeddedResource Include="PhaseSnapshotCreatorForm.resx">
       <DependentUpon>PhaseSnapshotCreatorForm.cs</DependentUpon>

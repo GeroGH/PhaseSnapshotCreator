@@ -1,18 +1,35 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Tekla.Structures.Model;
 
 namespace SingleSnapShot.Services
 {
-    public class TeklaService
+    public static class TeklaService
     {
-        public string GetModelPath()
+        private const string ExportFolderName = "PhaseSnapshots";
+        private const string MacroName = "CreateSnapShotMacro.cs";
+        public static string ExportFolderPath { get; private set; }
+        public static string MacroPath { get; private set; }
+
+        public static void Initialise()
         {
-            var model = new Model();
-            return !model.GetConnectionStatus() ? throw new Exception("Tekla Structures is not running or model is not connected.") : model.GetInfo().ModelPath;
+            var modelPath = GetModelPath();
+            var userInitials = GetUserInitials();
+            var macroDirectory = GetUserMacroDirectory();
+
+            ExportFolderPath = Path.Combine(modelPath, ExportFolderName, userInitials);
+            Directory.CreateDirectory(ExportFolderPath);
+            MacroPath = Path.Combine(macroDirectory, MacroName);
         }
 
-        public string GetUserMacroDirectory()
+        private static string GetModelPath()
+        {
+            var model = new Model();
+            return !model.GetConnectionStatus() ? throw new Exception("Tekla Structures is not running or a model is not connected.") : model.GetInfo().ModelPath;
+        }
+
+        private static string GetUserMacroDirectory()
         {
             var macroDirectories = string.Empty;
 
@@ -20,18 +37,17 @@ namespace SingleSnapShot.Services
 
             if (!success)
             {
-                throw new Exception("Unable to determine Tekla macro directory.");
+                throw new Exception("Unable to determine the Tekla macro directory.");
             }
 
-            var userMacroDirectory = macroDirectories.Split(';').FirstOrDefault(x => x.Contains("user-macros"));
+            var userMacroDirectory = macroDirectories.Split(';').FirstOrDefault(x => x.IndexOf("user-macros", StringComparison.OrdinalIgnoreCase) >= 0);
 
             return userMacroDirectory == null ? throw new Exception("Tekla user macro directory not found.") : userMacroDirectory.Trim();
         }
 
-        public string GetUserInitials()
+        private static string GetUserInitials()
         {
-            var userName = Environment.UserName;
-            return string.Concat(userName.Split('.', '_', '-').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Substring(0, 1))).ToUpper();
+            return string.Concat(Environment.UserName.Split('.', '_', '-').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x[0])).ToUpper();
         }
     }
 }
