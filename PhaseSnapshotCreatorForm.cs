@@ -54,6 +54,7 @@ namespace PhaseSnapshotCreator
             MacroCreator.CreateSnapshotMacro(TeklaService.MacroPath, TeklaService.ExportFolderPath, this.Resolution.Text, "Frame 1");
             Tekla.Structures.Model.Operations.Operation.RunMacro(TeklaService.MacroPath);
         }
+
         public void ApplyRepresentation(string representationName)
         {
 
@@ -69,6 +70,7 @@ namespace PhaseSnapshotCreator
                 currentView.Modify();
             }
         }
+
         private void ButtonOpenFolder_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe", TeklaService.ExportFolderPath);

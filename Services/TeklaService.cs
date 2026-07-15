@@ -8,30 +8,46 @@ namespace PhaseSnapshotCreator.Services
     public static class TeklaService
     {
         private const string ExportFolderName = "PhaseSnapshots";
-        private const string FilerNamePrefix = "SnapshotCreatorTempFilter";
+        private const string FilterNamePrefix = "PhaseSnapshotFilter";
         private const string MacroName = "CreateSnapShotMacro.cs";
-        public static string ExportFolderPath { get; private set; }
-        public static string MacroPath { get; private set; }
-        public static string FilterName { get; private set; }
+
+        public static Model Model { get; private set; }
+
         public static string ModelPath { get; private set; }
+
+        public static string ExportFolderPath { get; private set; }
+
+        public static string MacroPath { get; private set; }
+
+        public static string FilterName { get; private set; }
+
+        public static string UserInitials { get; private set; }
 
         public static void Initialise()
         {
-            var modelPath = GetModelPath();
-            var userInitials = GetUserInitials();
-            var macroDirectory = GetUserMacroDirectory();
+            ConnectToModel();
 
-            ExportFolderPath = Path.Combine(modelPath, ExportFolderName, userInitials);
-            FilterName = FilerNamePrefix + userInitials;
+            UserInitials = GetUserInitials();
+
+            ExportFolderPath = Path.Combine(ModelPath, ExportFolderName, UserInitials);
+
             Directory.CreateDirectory(ExportFolderPath);
-            MacroPath = Path.Combine(macroDirectory, MacroName);
-            ModelPath = GetModelPath();
+
+            FilterName = FilterNamePrefix + UserInitials;
+
+            MacroPath = Path.Combine(GetUserMacroDirectory(), MacroName);
         }
 
-        private static string GetModelPath()
+        private static void ConnectToModel()
         {
-            var model = new Model();
-            return !model.GetConnectionStatus() ? throw new Exception("Tekla Structures is not running or a model is not connected.") : model.GetInfo().ModelPath;
+            Model = new Model();
+
+            if (!Model.GetConnectionStatus())
+            {
+                throw new Exception("Tekla Structures is not running or no model is open.");
+            }
+
+            ModelPath = Model.GetInfo().ModelPath;
         }
 
         private static string GetUserMacroDirectory()
@@ -45,9 +61,9 @@ namespace PhaseSnapshotCreator.Services
                 throw new Exception("Unable to determine the Tekla macro directory.");
             }
 
-            var userMacroDirectory = macroDirectories.Split(';').FirstOrDefault(x => x.IndexOf("user-macros", StringComparison.OrdinalIgnoreCase) >= 0);
+            var directory = macroDirectories.Split(';').Select(x => x.Trim()).FirstOrDefault(x => x.IndexOf("user-macros", StringComparison.OrdinalIgnoreCase) >= 0);
 
-            return userMacroDirectory == null ? throw new Exception("Tekla user macro directory not found.") : userMacroDirectory.Trim();
+            return directory == null ? throw new Exception("Tekla user macro directory could not be found.") : directory;
         }
 
         private static string GetUserInitials()
