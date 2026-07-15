@@ -32,14 +32,16 @@ namespace PhaseSnapshotCreator
         private void InitializeComponent()
         {
             this.PhaseOrderLabel = new System.Windows.Forms.Label();
-            this.PhaseOrder = new System.Windows.Forms.TextBox();
+            this.PhasesInOrder = new System.Windows.Forms.TextBox();
             this.ButtonStartPhasing = new System.Windows.Forms.Button();
             this.ButtonOpenFolder = new System.Windows.Forms.Button();
             this.VisiblePhasesLabel = new System.Windows.Forms.Label();
             this.Resolution = new System.Windows.Forms.TextBox();
             this.VisiblePhases = new System.Windows.Forms.TextBox();
             this.ResolutionLabel = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // PhaseOrderLabel
@@ -51,14 +53,14 @@ namespace PhaseSnapshotCreator
             this.PhaseOrderLabel.TabIndex = 0;
             this.PhaseOrderLabel.Text = "Phase Order:";
             // 
-            // PhaseOrder
+            // PhasesInOrder
             // 
-            this.PhaseOrder.Location = new System.Drawing.Point(10, 23);
-            this.PhaseOrder.Multiline = true;
-            this.PhaseOrder.Name = "PhaseOrder";
-            this.PhaseOrder.Size = new System.Drawing.Size(109, 152);
-            this.PhaseOrder.TabIndex = 1;
-            this.PhaseOrder.TextChanged += new System.EventHandler(this.TextBoxFileName_TextChanged);
+            this.PhasesInOrder.Location = new System.Drawing.Point(10, 23);
+            this.PhasesInOrder.Multiline = true;
+            this.PhasesInOrder.Name = "PhasesInOrder";
+            this.PhasesInOrder.Size = new System.Drawing.Size(109, 152);
+            this.PhasesInOrder.TabIndex = 1;
+            this.PhasesInOrder.TextChanged += new System.EventHandler(this.TextBoxFileName_TextChanged);
             // 
             // ButtonStartPhasing
             // 
@@ -115,34 +117,44 @@ namespace PhaseSnapshotCreator
             this.ResolutionLabel.TabIndex = 4;
             this.ResolutionLabel.Text = "Resolution:";
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 182);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(411, 22);
-            this.statusStrip1.TabIndex = 5;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 182);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(411, 22);
+            this.statusStrip.TabIndex = 5;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(67, 17);
+            this.StatusLabel.Text = "StatusLabel";
             // 
             // CreateSnapShot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(411, 204);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.ResolutionLabel);
             this.Controls.Add(this.VisiblePhases);
             this.Controls.Add(this.ButtonOpenFolder);
             this.Controls.Add(this.ButtonStartPhasing);
             this.Controls.Add(this.Resolution);
-            this.Controls.Add(this.PhaseOrder);
+            this.Controls.Add(this.PhasesInOrder);
             this.Controls.Add(this.VisiblePhasesLabel);
             this.Controls.Add(this.PhaseOrderLabel);
             this.Name = "CreateSnapShot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Phase Snapshot Creator v10.07.2026a";
+            this.Text = "Phase Snapshot Creator v15.07.2026a";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CreateSnapShot_FormClosing);
             this.Load += new System.EventHandler(this.PhaseSnapshotCreator_Load);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,14 +163,15 @@ namespace PhaseSnapshotCreator
         #endregion
 
         private Label PhaseOrderLabel;
-        private TextBox PhaseOrder;
+        private TextBox PhasesInOrder;
         private Button ButtonStartPhasing;
         private Button ButtonOpenFolder;
         private Label VisiblePhasesLabel;
         private TextBox Resolution;
         private TextBox VisiblePhases;
         private Label ResolutionLabel;
-        private StatusStrip statusStrip1;
+        private StatusStrip statusStrip;
+        private ToolStripStatusLabel StatusLabel;
     }
 }
 

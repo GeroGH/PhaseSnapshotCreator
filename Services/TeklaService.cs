@@ -29,15 +29,19 @@ namespace PhaseSnapshotCreator.Services
 
             UserInitials = GetUserInitials();
 
-            ExportFolderPath = Path.Combine(ModelPath, ExportFolderName, UserInitials);
+            ModelPath = Model.GetInfo().ModelPath;
 
-            Directory.CreateDirectory(ExportFolderPath);
+            CreateNewSnapshotSession();
 
             FilterName = FilterNamePrefix + UserInitials;
 
             MacroPath = Path.Combine(GetUserMacroDirectory(), MacroName);
         }
-
+        public static void CreateNewSnapshotSession()
+        {
+            var sessionName = DateTime.Now.ToString("yyyy-MM-dd_HHmmss");
+            ExportFolderPath = Path.Combine(ModelPath, ExportFolderName, UserInitials, sessionName);
+        }
         private static void ConnectToModel()
         {
             Model = new Model();

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PhaseSnapshotCreator.Filtering;
 using PhaseSnapshotCreator.Services;
@@ -20,6 +23,8 @@ namespace PhaseSnapshotCreator
 
         private void PhaseSnapshotCreator_Load(object sender, EventArgs e)
         {
+            this.UpdateStatus("Add phases, then click Start Phasing.");
+
             var currentScreen = Screen.FromPoint(Cursor.Position);
             var workingArea = currentScreen.WorkingArea;
             this.Location = new Point(workingArea.Right - this.Width - 50, workingArea.Top + 150);
@@ -30,14 +35,12 @@ namespace PhaseSnapshotCreator
 
                 if (Properties.Settings.Default.PhaseOrder != null)
                 {
-                    this.PhaseOrder.Lines =
-                        Properties.Settings.Default.PhaseOrder.Cast<string>().ToArray();
+                    this.PhasesInOrder.Lines = Properties.Settings.Default.PhaseOrder.Cast<string>().ToArray();
                 }
 
                 if (Properties.Settings.Default.VisiblePhases != null)
                 {
-                    this.VisiblePhases.Lines =
-                        Properties.Settings.Default.VisiblePhases.Cast<string>().ToArray();
+                    this.VisiblePhases.Lines = Properties.Settings.Default.VisiblePhases.Cast<string>().ToArray();
                 }
 
             }
@@ -47,12 +50,54 @@ namespace PhaseSnapshotCreator
             }
         }
 
+        private void UpdateStatus(string message)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => this.UpdateStatus(message)));
+                return;
+            }
+
+            this.StatusLabel.Text = message;
+        }
+
         private void ButtonStartPhasing_Click(object sender, EventArgs e)
         {
-            FilterBuilder.CreateFilter(TeklaService.FilterName, this.PhaseOrder.ToString(), this.VisiblePhases.ToString());
-            this.ApplyRepresentation(TeklaService.FilterName);
-            MacroCreator.CreateSnapshotMacro(TeklaService.MacroPath, TeklaService.ExportFolderPath, this.Resolution.Text, "Frame 1");
-            Tekla.Structures.Model.Operations.Operation.RunMacro(TeklaService.MacroPath);
+            this.UpdateStatus("Preparing snapshot export...");
+
+            TeklaService.CreateNewSnapshotSession();
+            Directory.CreateDirectory(TeklaService.ExportFolderPath);
+
+            var phasesInOrder = PhasesInOrderManager.GetPhases(this.PhasesInOrder.Text);
+            var alwaysVisiblePhases = PhasesInOrderManager.GetPhases(this.VisiblePhases.Text);
+
+            var visibleProgressPhases = new List<int>();
+            var frameCounter = 1;
+
+            foreach (var currentPhase in phasesInOrder)
+            {
+                this.UpdateStatus($"Processing Phase {currentPhase} (Frame {frameCounter})...");
+                visibleProgressPhases.Add(currentPhase);
+
+                var phasesToShow = new List<int>();
+                phasesToShow.AddRange(visibleProgressPhases);
+                phasesToShow.AddRange(alwaysVisiblePhases);
+                phasesToShow = phasesToShow.Distinct().ToList();
+
+                this.UpdateStatus($"Creating filter for Phase {currentPhase}...");
+                FilterBuilder.CreateFilter(TeklaService.FilterName, phasesToShow);
+
+                this.UpdateStatus($"Updating Tekla representation...");
+                this.ApplyRepresentation(TeklaService.FilterName);
+
+                this.UpdateStatus($"Creating snapshot Frame {frameCounter}...");
+                var snapshotName = $"Frame {frameCounter:00}";
+                MacroCreator.CreateSnapshotMacro(TeklaService.MacroPath, TeklaService.ExportFolderPath, this.Resolution.Text, snapshotName);
+                Tekla.Structures.Model.Operations.Operation.RunMacro(TeklaService.MacroPath);
+                frameCounter++;
+            }
+
+            this.UpdateStatus("Snapshot export completed. Click Open Folder to view the results.");
         }
 
         public void ApplyRepresentation(string representationName)
@@ -73,7 +118,21 @@ namespace PhaseSnapshotCreator
 
         private void ButtonOpenFolder_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe", TeklaService.ExportFolderPath);
+            var folderPath = TeklaService.ExportFolderPath;
+
+            if (!Directory.Exists(folderPath))
+            {
+                folderPath = Path.GetDirectoryName(folderPath);
+            }
+
+            if (!string.IsNullOrEmpty(folderPath) && Directory.Exists(folderPath))
+            {
+                Process.Start("explorer.exe", folderPath);
+            }
+            else
+            {
+                MessageBox.Show("Snapshot folder does not exist.");
+            }
         }
 
         private void TextBoxResolution_TextChanged(object sender, EventArgs e)
@@ -85,7 +144,7 @@ namespace PhaseSnapshotCreator
         {
             var phases = new StringCollection();
 
-            foreach (var phase in this.PhaseOrder.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var phase in this.PhasesInOrder.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
             {
                 phases.Add(phase);
             }
@@ -103,6 +162,27 @@ namespace PhaseSnapshotCreator
             }
 
             Properties.Settings.Default.VisiblePhases = phases;
+        }
+
+        public static class PhasesInOrderManager
+        {
+            public static List<int> GetPhases(string text)
+            {
+                var phases = new List<int>();
+                var seen = new HashSet<int>();
+
+                foreach (Match match in Regex.Matches(text, @"\d+"))
+                {
+                    var phase = int.Parse(match.Value);
+
+                    if (seen.Add(phase))
+                    {
+                        phases.Add(phase);
+                    }
+                }
+
+                return phases;
+            }
         }
 
         private void CreateSnapShot_FormClosing(object sender, FormClosingEventArgs e)
