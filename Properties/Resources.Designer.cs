@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SingleSnapShot.Properties
+namespace PhaseSnapshotCreator.Properties
 {
 
 

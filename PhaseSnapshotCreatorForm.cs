@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using SingleSnapShot.Services;
-using Tekla.Structures.Model.Operations;
+using PhaseSnapshotCreator.Filtering;
+using PhaseSnapshotCreator.Services;
+using Tekla.Structures.Model.UI;
 
 
-namespace SingleSnapShot
+namespace PhaseSnapshotCreator
 {
     public partial class CreateSnapShot : Form
     {
@@ -18,6 +20,10 @@ namespace SingleSnapShot
 
         private void PhaseSnapshotCreator_Load(object sender, EventArgs e)
         {
+            var currentScreen = Screen.FromPoint(Cursor.Position);
+            var workingArea = currentScreen.WorkingArea;
+            this.Location = new Point(workingArea.Right - this.Width - 50, workingArea.Top + 150);
+
             try
             {
                 this.Resolution.Text = Properties.Settings.Default.Resolution;
@@ -43,10 +49,26 @@ namespace SingleSnapShot
 
         private void ButtonStartPhasing_Click(object sender, EventArgs e)
         {
+            FilterBuilder.CreateFilter(TeklaService.FilterName, this.PhaseOrder.ToString(), this.VisiblePhases.ToString());
+            this.ApplyRepresentation(TeklaService.FilterName);
             MacroCreator.CreateSnapshotMacro(TeklaService.MacroPath, TeklaService.ExportFolderPath, this.Resolution.Text, "Frame 1");
-            Operation.RunMacro(TeklaService.MacroPath);
+            Tekla.Structures.Model.Operations.Operation.RunMacro(TeklaService.MacroPath);
         }
+        public void ApplyRepresentation(string representationName)
+        {
 
+            var visibleViews = ViewHandler.GetVisibleViews();
+
+            while (visibleViews.MoveNext())
+            {
+                var currentView = visibleViews.Current;
+                if (currentView == null)
+                    continue;
+
+                currentView.ViewFilter = representationName;
+                currentView.Modify();
+            }
+        }
         private void ButtonOpenFolder_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe", TeklaService.ExportFolderPath);

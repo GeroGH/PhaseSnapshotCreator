@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using SingleSnapShot.Services;
+using PhaseSnapshotCreator.Services;
 
-namespace SingleSnapShot
+namespace PhaseSnapshotCreator
 {
     internal static class Program
     {

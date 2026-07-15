@@ -3,14 +3,17 @@ using System.IO;
 using System.Linq;
 using Tekla.Structures.Model;
 
-namespace SingleSnapShot.Services
+namespace PhaseSnapshotCreator.Services
 {
     public static class TeklaService
     {
         private const string ExportFolderName = "PhaseSnapshots";
+        private const string FilerNamePrefix = "SnapshotCreatorTempFilter";
         private const string MacroName = "CreateSnapShotMacro.cs";
         public static string ExportFolderPath { get; private set; }
         public static string MacroPath { get; private set; }
+        public static string FilterName { get; private set; }
+        public static string ModelPath { get; private set; }
 
         public static void Initialise()
         {
@@ -19,8 +22,10 @@ namespace SingleSnapShot.Services
             var macroDirectory = GetUserMacroDirectory();
 
             ExportFolderPath = Path.Combine(modelPath, ExportFolderName, userInitials);
+            FilterName = FilerNamePrefix + userInitials;
             Directory.CreateDirectory(ExportFolderPath);
             MacroPath = Path.Combine(macroDirectory, MacroName);
+            ModelPath = GetModelPath();
         }
 
         private static string GetModelPath()

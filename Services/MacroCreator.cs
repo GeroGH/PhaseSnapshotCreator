@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace SingleSnapShot.Services
+namespace PhaseSnapshotCreator.Services
 {
     public static class MacroCreator
     {
