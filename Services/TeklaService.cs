@@ -39,7 +39,7 @@ namespace PhaseSnapshotCreator.Services
         }
         public static void CreateNewSnapshotSession()
         {
-            var sessionName = DateTime.Now.ToString("yyyy-MM-dd_HHmmss");
+            var sessionName = DateTime.Now.ToString("yyyyMMdd-HHmmss");
             ExportFolderPath = Path.Combine(ModelPath, ExportFolderName, UserInitials, sessionName);
         }
         private static void ConnectToModel()

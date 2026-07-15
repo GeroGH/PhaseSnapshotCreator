@@ -19,6 +19,9 @@ namespace PhaseSnapshotCreator
         public CreateSnapShot()
         {
             this.InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
         }
 
         private void PhaseSnapshotCreator_Load(object sender, EventArgs e)
@@ -67,6 +70,14 @@ namespace PhaseSnapshotCreator
 
             TeklaService.CreateNewSnapshotSession();
             Directory.CreateDirectory(TeklaService.ExportFolderPath);
+
+            var warmupFile = "WarmupFile";
+            MacroCreator.CreateSnapshotMacro(TeklaService.MacroPath, TeklaService.ExportFolderPath, this.Resolution.Text, warmupFile);
+            var warmupPath = Path.Combine(TeklaService.ExportFolderPath, $"{warmupFile}.png");
+            if (File.Exists(warmupPath))
+            {
+                File.Delete(warmupPath);
+            }
 
             var phasesInOrder = PhasesInOrderManager.GetPhases(this.PhasesInOrder.Text);
             var alwaysVisiblePhases = PhasesInOrderManager.GetPhases(this.VisiblePhases.Text);

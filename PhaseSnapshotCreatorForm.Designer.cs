@@ -58,6 +58,7 @@ namespace PhaseSnapshotCreator
             this.PhasesInOrder.Location = new System.Drawing.Point(10, 23);
             this.PhasesInOrder.Multiline = true;
             this.PhasesInOrder.Name = "PhasesInOrder";
+            this.PhasesInOrder.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.PhasesInOrder.Size = new System.Drawing.Size(109, 152);
             this.PhasesInOrder.TabIndex = 1;
             this.PhasesInOrder.TextChanged += new System.EventHandler(this.TextBoxFileName_TextChanged);
@@ -104,6 +105,7 @@ namespace PhaseSnapshotCreator
             this.VisiblePhases.Location = new System.Drawing.Point(128, 23);
             this.VisiblePhases.Multiline = true;
             this.VisiblePhases.Name = "VisiblePhases";
+            this.VisiblePhases.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.VisiblePhases.Size = new System.Drawing.Size(109, 152);
             this.VisiblePhases.TabIndex = 3;
             this.VisiblePhases.TextChanged += new System.EventHandler(this.VisiblePhases_TextChanged);
@@ -123,21 +125,22 @@ namespace PhaseSnapshotCreator
             this.StatusLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 182);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(411, 22);
+            this.statusStrip.Size = new System.Drawing.Size(410, 22);
             this.statusStrip.TabIndex = 5;
             this.statusStrip.Text = "statusStrip1";
             // 
             // StatusLabel
             // 
             this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(67, 17);
+            this.StatusLabel.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.StatusLabel.Size = new System.Drawing.Size(77, 17);
             this.StatusLabel.Text = "StatusLabel";
             // 
             // CreateSnapShot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 204);
+            this.ClientSize = new System.Drawing.Size(410, 204);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.ResolutionLabel);
             this.Controls.Add(this.VisiblePhases);
