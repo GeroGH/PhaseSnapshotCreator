@@ -73,6 +73,8 @@ namespace PhaseSnapshotCreator
 
             var warmupFile = "WarmupFile";
             MacroCreator.CreateSnapshotMacro(TeklaService.MacroPath, TeklaService.ExportFolderPath, this.Resolution.Text, warmupFile);
+            Tekla.Structures.Model.Operations.Operation.RunMacro(TeklaService.MacroPath);
+
             var warmupPath = Path.Combine(TeklaService.ExportFolderPath, $"{warmupFile}.png");
             if (File.Exists(warmupPath))
             {
