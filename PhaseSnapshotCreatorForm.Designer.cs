@@ -49,7 +49,8 @@ namespace PhaseSnapshotCreator
             this.PhaseOrderLabel.AutoSize = true;
             this.PhaseOrderLabel.Location = new System.Drawing.Point(10, 8);
             this.PhaseOrderLabel.Name = "PhaseOrderLabel";
-            this.PhaseOrderLabel.Size = new System.Drawing.Size(69, 13);
+            this.PhaseOrderLabel.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.PhaseOrderLabel.Size = new System.Drawing.Size(70, 13);
             this.PhaseOrderLabel.TabIndex = 0;
             this.PhaseOrderLabel.Text = "Phase Order:";
             // 
@@ -86,9 +87,10 @@ namespace PhaseSnapshotCreator
             // VisiblePhasesLabel
             // 
             this.VisiblePhasesLabel.AutoSize = true;
-            this.VisiblePhasesLabel.Location = new System.Drawing.Point(125, 9);
+            this.VisiblePhasesLabel.Location = new System.Drawing.Point(128, 9);
             this.VisiblePhasesLabel.Name = "VisiblePhasesLabel";
-            this.VisiblePhasesLabel.Size = new System.Drawing.Size(83, 13);
+            this.VisiblePhasesLabel.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.VisiblePhasesLabel.Size = new System.Drawing.Size(84, 13);
             this.VisiblePhasesLabel.TabIndex = 0;
             this.VisiblePhasesLabel.Text = "Vissible Phases:";
             // 
@@ -115,7 +117,8 @@ namespace PhaseSnapshotCreator
             this.ResolutionLabel.AutoSize = true;
             this.ResolutionLabel.Location = new System.Drawing.Point(248, 8);
             this.ResolutionLabel.Name = "ResolutionLabel";
-            this.ResolutionLabel.Size = new System.Drawing.Size(60, 13);
+            this.ResolutionLabel.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            this.ResolutionLabel.Size = new System.Drawing.Size(61, 13);
             this.ResolutionLabel.TabIndex = 4;
             this.ResolutionLabel.Text = "Resolution:";
             // 

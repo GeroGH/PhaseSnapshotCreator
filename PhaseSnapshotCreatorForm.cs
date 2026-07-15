@@ -26,7 +26,7 @@ namespace PhaseSnapshotCreator
 
         private void PhaseSnapshotCreator_Load(object sender, EventArgs e)
         {
-            this.UpdateStatus("Add phases, then click Start Phasing.");
+            this.UpdateStatus("Add phases in order, then click Start Phasing.");
 
             var currentScreen = Screen.FromPoint(Cursor.Position);
             var workingArea = currentScreen.WorkingArea;
